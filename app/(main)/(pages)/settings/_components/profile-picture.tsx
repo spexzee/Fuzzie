@@ -27,11 +27,13 @@ const ProfilePicture = ({userImage ,onDelete , onUpload }: Props) => {
                 {
                     userImage ? 
                     <>
-                        <div className="relative h-full w-2/12">
+                        <div className="relative w-40 h-40 rounded-full">
                             <Image
                                 src={userImage}
                                 alt="User_Image"
                                 fill
+                                objectFit="cover"
+                                className="rounded-full"
                             />
                         </div>
                         <Button
@@ -41,7 +43,7 @@ const ProfilePicture = ({userImage ,onDelete , onUpload }: Props) => {
                         <X /> Remove Logo
                         </Button>
                     </> 
-                    : <UploadCareButton />
+                    : <UploadCareButton onUpload={onUpload} />
                 }
                 
             </div>
