@@ -40,7 +40,7 @@ const EditorCanvasSidebar = ({nodes}: Props) => {
           value="actions"
           className="flex flex-col gap-4 p-4"
         >
-            {Object.entries(EditorCanvasDefaultCardTypes)
+          {Object.entries(EditorCanvasDefaultCardTypes)
             .filter(
               ([_, cardType]) =>
                 (!nodes.length && cardType.type === 'Trigger') ||
@@ -64,8 +64,8 @@ const EditorCanvasSidebar = ({nodes}: Props) => {
                 </CardHeader>
               </Card>
             ))}
-        </TabsContent>
-        </Tabs>
+        </TabsContent>        
+      </Tabs>
     </aside>
   )
 }
