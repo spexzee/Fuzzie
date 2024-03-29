@@ -29,7 +29,7 @@ const ProfileForm = ({ user, onUpdate }: Props) => {
     resolver: zodResolver(EditUserProfileSchema),
     defaultValues: {
       name: user.name, 
-      email: user.email 
+      email: user.email  
     },
   })
 
