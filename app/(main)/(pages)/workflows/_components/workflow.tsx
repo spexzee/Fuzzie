@@ -10,6 +10,8 @@ import Image from 'next/image'
 
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
+import { toast } from 'sonner';
+import { onFlowPublish } from '../_actions/workflow-connections';
 
 
 type Props = {
@@ -20,7 +22,14 @@ type Props = {
 }
 
 const Workflow = ({name,description,id,publish}: Props) => {
-    // Todo : Wire up DB
+  const onPublishFlow = async (event: any) => {
+    const response = await onFlowPublish(
+      id,
+      event.target.ariaChecked === 'false'
+    )
+    if (response) toast.message(response)
+  }
+
   return (
     <Card className="flex w-full items-center justify-between">
       <CardHeader className="flex flex-col gap-4">
@@ -56,15 +65,16 @@ const Workflow = ({name,description,id,publish}: Props) => {
       </CardHeader>
       <div className="flex flex-col items-center gap-2 p-4">
         <Label
-          htmlFor="airplane-mode"
-          className="text-muted-foreground"
-        >
-        </Label>
-        <Switch
-          id="airplane-mode"
-          // onClick={onPublishFlow}
-        //   defaultChecked={publish!}
-        />
+        htmlFor="airplane-mode"
+        className="text-muted-foreground"
+      >
+        {publish! ? 'On' : 'Off'}
+      </Label>
+      <Switch
+        id="airplane-mode"
+        // onClick={onPublishFlow}
+        defaultChecked={publish!}
+      />
     </div>
     </Card>
   )

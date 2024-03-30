@@ -1,5 +1,5 @@
 import React from 'react'
-import Workflow from '../../settings/_components/workflow';
+import Workflow from './workflow';
 
 type Props = {}
 
