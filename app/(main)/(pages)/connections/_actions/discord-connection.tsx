@@ -92,22 +92,29 @@ export const onDiscordConnect = async (
 }
 
 export const getDiscordConnectionUrl = async () => {
-  const user = await currentUser()
-  if (user) {
-    const webhook = await db.discordWebhook.findFirst({
-      where: {
-        userId: user.id,
-      },
-      select: {
-        url: true,
-        name: true,
-        guildName: true,
-      },
-    })
+  try {
+    const user = await currentUser()
+    if (user) {
+      const webhook = await db.discordWebhook.findFirst({
+        where: {
+          userId: user.id,
+        },
+        select: {
+          url: true,
+          name: true,
+          guildName: true,
+        },
+      })
 
-    return webhook
+      return webhook
+    }
+  } catch (err) {
+    console.error("Error fetching Discord webhook:", err)
+    throw new Error("Failed to fetch Discord webhook. Please try again later.")
+    // You can customize the error message according to your application's requirements
   }
 }
+
 
 export const postContentToWebHook = async (content: string, url: string) => {
   console.log(content)

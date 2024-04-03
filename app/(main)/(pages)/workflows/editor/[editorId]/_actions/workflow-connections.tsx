@@ -8,18 +8,43 @@ export const onCreateNodesEdges = async (
   edges: string,
   flowPath: string
 ) => {
-  const flow = await db.workflows.update({
-    where: {
-      id: flowId,
-    },
-    data: {
-      nodes,
-      edges,
-      flowPath: flowPath,
-    },
-  })
+  try {
+    const originalFlow = await db.workflows.findUnique({
+      where: {
+        id: flowId,
+      },
+      select: {
+        name: true,
+      },
+    })
 
-  if (flow) return { message: 'flow saved' }
+    if (!originalFlow) {
+      throw new Error('Flow not found')
+    }
+
+    const updatedName = originalFlow.name.includes("(updated)") ? originalFlow.name : `${originalFlow.name} (updated)`
+
+    const updatedFlow = await db.workflows.update({
+      where: {
+        id: flowId,
+      },
+      data: {
+        nodes,
+        edges,
+        flowPath,
+        name: updatedName,
+      },
+    })
+
+    if (updatedFlow) {
+      return { message: 'flow saved' }
+    } else {
+      throw new Error('Failed to update workflow')
+    }
+  } catch (error) {
+    console.error('Error in onCreateNodesEdges:', error)
+    throw error
+  }
 }
 
 export const onFlowPublish = async (workflowId: string, state: boolean) => {
@@ -33,6 +58,6 @@ export const onFlowPublish = async (workflowId: string, state: boolean) => {
     },
   })
 
-  if (published.publish) return 'Workflow published'
+  if (published?.publish) return 'Workflow published'
   return 'Workflow unpublished'
 }

@@ -1,3 +1,4 @@
+"use client"
 import {
     Card,
     CardDescription,
@@ -7,6 +8,7 @@ import {
   
 import Link from 'next/link'
 import Image from 'next/image'
+import { useEffect, useState } from 'react';
 
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
@@ -22,13 +24,14 @@ type Props = {
 }
 
 const Workflow = ({name,description,id,publish}: Props) => {
-  const onPublishFlow = async (event: any) => {
-    const response = await onFlowPublish(
-      id,
-      event.target.ariaChecked === 'false'
-    )
-    if (response) toast.message(response)
-  }
+  
+  const [isChecked, setIsChecked] = useState(publish! || false);
+  
+  const onPublishFlow = async () => {
+    const response = await onFlowPublish(id, !isChecked);
+    if (response) toast.message(response);
+  };
+
 
   return (
     <Card className="flex w-full items-center justify-between">
@@ -71,10 +74,13 @@ const Workflow = ({name,description,id,publish}: Props) => {
         {publish! ? 'On' : 'Off'}
       </Label>
       <Switch
-        id="airplane-mode"
-        // onClick={onPublishFlow}
-        defaultChecked={publish!}
-      />
+          id="publish-toggle"
+          onChange={() => {
+            setIsChecked(!isChecked);
+            onPublishFlow();
+          }}
+          checked={isChecked}
+        />
     </div>
     </Card>
   )

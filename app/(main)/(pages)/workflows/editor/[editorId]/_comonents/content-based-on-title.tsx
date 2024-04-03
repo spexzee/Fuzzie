@@ -1,3 +1,4 @@
+"use client";
 import { nodeMapper } from '@/lib/types'
 import { ConnectionProviderProps } from '@/providers/connection-provider'
 import { EditorState } from '@/providers/editor-provider'
@@ -16,6 +17,7 @@ import { toast } from 'sonner'
 import GoogleFileDetails from './google-file-details'
 import GoogleDriveFiles from './google-drive-details';
 import ActionButton from './action-button'
+import axios from 'axios'
 
 
 
@@ -45,6 +47,22 @@ const ContentBasedOnTitle = ({nodeConnection,newState,file,setFile,selectedSlack
 }: Props) => {
     const { selectedNode } = newState.editor
     const title = selectedNode.data.title
+
+    // useEffect(() => {
+    //   const reqGoogle = async () => {
+    //     const response: { data: { message: { files: any } } } = await axios.get(
+    //       '/api/drive'
+    //     )
+    //     if (response) {
+    //       console.log(response.data.message.files[0])
+    //       toast.message("Fetched File")
+    //       setFile(response.data.message.files[0])
+    //     } else {
+    //       toast.error('Something went wrong')
+    //     }
+    //   }
+    //   reqGoogle()
+    // }, [])
 
     const nodeConnectionType: any = (nodeConnection as any)[nodeMapper[title]];
   if (!nodeConnectionType) return <p>Not connected</p>

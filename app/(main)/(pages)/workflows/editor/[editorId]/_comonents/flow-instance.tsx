@@ -17,7 +17,7 @@ type Props = {
 
 const FlowInstance = ({ children, edges, nodes }: Props) => {
   const pathname = usePathname()
-  const [isFlow, setIsFlow] = useState([])
+  const [isFlow, setIsFlow] = useState<string[]>([])
   const { nodeConnection } = useNodeConnections()
 
   const onFlowAutomation = useCallback(async () => {
@@ -40,13 +40,12 @@ const FlowInstance = ({ children, edges, nodes }: Props) => {
     const flows: any = []
     const connectedEdges = edges.map((edge) => edge.target)
     connectedEdges.map((target) => {
-      nodes.forEach((node) => {
+      nodes.map((node) => {
         if (node.id === target) {
           flows.push(node.type)
         }
       })
     })
-
     setIsFlow(flows)
   }
 
