@@ -18,14 +18,22 @@ const UploadCareButton = ({ onUpload }: Props) => {
     useEffect(() => {
         const handleUpload = async (e: any) => {
             const file = await onUpload(e.detail.cdnUrl);
-            if (file) router.refresh()
+            if (file) router.refresh();
+        };
+    
+        // Add the event listener only if ctxProviderRef.current is not null
+        if (ctxProviderRef.current) {
+            ctxProviderRef.current.addEventListener('file-upload-success', handleUpload);
         }
-
-        ctxProviderRef.current.addEventListener('file-upload-success', handleUpload)
-
-
-
-    }, [])
+    
+        // Cleanup function to remove the event listener when component unmounts
+        return () => {
+            if (ctxProviderRef.current) {
+                ctxProviderRef.current.removeEventListener('file-upload-success', handleUpload);
+            }
+        };
+    }, []); // Empty dependency array to ensure this effect runs only once
+    
 
     return (
         <div>
