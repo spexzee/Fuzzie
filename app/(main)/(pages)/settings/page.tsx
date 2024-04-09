@@ -8,8 +8,14 @@ type Props = {}
 
 const Settings = async (props: Props) => {
 
-const authUser = await currentUser()
-if(!authUser) return null
+let authUser : any | null;;
+try {
+  authUser = await currentUser();
+  if (!authUser) return null;
+} catch (error :any) {
+  console.error("Error fetching the current user:", error);
+  return null;
+}
 
 
 const user = await db.user.findUnique({

@@ -174,6 +174,6 @@ export const onGetNodesEdges = async (flowId: string) => {
       nodes: true,
       edges: true,
     },
-  })
-  if (nodesEdges?.nodes && nodesEdges?.edges) return nodesEdges
+  });
+  if (nodesEdges?.nodes && nodesEdges?.edges) return nodesEdges;
 }
